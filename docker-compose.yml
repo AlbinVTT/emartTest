@@ -1,0 +1,34 @@
+
+version: '3'
+services:
+  frontend:
+    build: ./frontend-react
+    ports:
+      - "3000:3000"
+    depends_on:
+      - apigateway
+
+  apigateway:
+    build: ./api-gateway-nodejs
+    ports:
+      - "3001:3001"
+    depends_on:
+      - compliance
+      - orderprocessor
+
+  orderprocessor:
+    build: ./order-processor-python
+    ports:
+      - "5001:5001"
+    depends_on:
+      - ledger
+
+  compliance:
+    build: ./compliance-service-dotnet
+    ports:
+      - "5002:80"
+
+  ledger:
+    build: ./ledger-service-java
+    ports:
+      - "5003:5003"
